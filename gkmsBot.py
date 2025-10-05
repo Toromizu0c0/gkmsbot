@@ -15,7 +15,8 @@ load_dotenv()
 
 # 自分のBotのアクセストークンに置き換えてください
 TOKEN = os.getenv("TOKEN_gkmsBot")
-GOOGLE_API_KEY = os.getenv("TOKEN_gkmsBot_Gemini")
+HAJIME_GOOGLE_API_KEY = os.getenv("TOKEN_gkmsBot_Gemini_hajime")
+NIA_GOOGLE_API_KEY = os.getenv("TOKEN_gkmsBot_Gemini_nia")
 
 intents = discord.Intents.default()
 #メッセージを読む権限を付与
@@ -25,12 +26,16 @@ intents.message_content=True
 client = discord.Client(intents=intents)
 
 load_dotenv()
-genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel("gemini-2.5-flash")
-chat = model.start_chat(history=[])
+genai.configure(api_key=HAJIME_GOOGLE_API_KEY)
+model_hajime = genai.GenerativeModel("gemini-2.5-flash")
+chat = model_hajime.start_chat(history=[])
 prompt = """この画像は，各パラメータのステータスと，その右にスコア倍率が書かれています．
             Vo，Da，Viのそれぞれのステータスを読み取って，半角スペース区切りで出力してください．
             他の文章はいらないので，リストだけ出力してください．"""
+
+model_nia = genai.GenerativeModel("gemini-2.5-flash")
+chat = model_nia.start_chat(history=[])
+prompt="""こんにちは"""
 
 
 # 起動時に動作する処理
@@ -63,6 +68,7 @@ async def on_message(message):
 
             except ValueError:
                 await message.channel.send("数字を正しく入力")
+                
 
     #メッセージに添付ファイルはありますか
     if message.attachments and message.content.startswith("/pic"):
