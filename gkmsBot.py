@@ -119,7 +119,7 @@ async def on_message(message):
                             # Geminiに送信するために画像をバイトデータに変換
                             img_byte_arr = io.BytesIO()
                             img_format = img.format if img.format else 'PNG'
-                            cropped_img.save(img_byte_arr, format=img_format)
+                            # cropped_img.save(img_byte_arr, format=img_format)
 
                             # ★★★ 修正点1: "mine_type" -> "mime_type" に修正 ★★★
                             image_part = {
