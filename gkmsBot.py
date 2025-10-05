@@ -27,15 +27,23 @@ client = discord.Client(intents=intents)
 
 load_dotenv()
 genai.configure(api_key=HAJIME_GOOGLE_API_KEY)
+
 model_hajime = genai.GenerativeModel("gemini-2.5-flash")
-chat = model_hajime.start_chat(history=[])
-prompt = """この画像は，各パラメータのステータスと，その右にスコア倍率が書かれています．
+chat_hajime = model_hajime.start_chat(history=[])
+prompt_hajime= """この画像は，各パラメータのステータスと，その右にスコア倍率が書かれています．
             Vo，Da，Viのそれぞれのステータスを読み取って，半角スペース区切りで出力してください．
             他の文章はいらないので，リストだけ出力してください．"""
 
 model_nia = genai.GenerativeModel("gemini-2.5-flash")
-chat = model_nia.start_chat(history=[])
-prompt="""こんにちは"""
+chat_nia = model_nia.start_chat(history=[])
+prompt_nia="""この画像から以下に示す内容を探して出力してください
+            ・Vo, Da, Viの各ステータス（スケジュール画面の上部にあります）
+            ・総ファン数（62000ではありません）
+            ・Vo, Da, Viのパラメータボーナス（"%"の左側の数字です．小数点以下まできちんと読み取ってください）
+            ・アイドルの名前（苗字と名前はつなげて出力してください）
+            これらを以上の順番でカンマ区切りで出力してください．
+            他の文章は不要ですので，解析された文字列のみ出力してください．"""
+# prompt_nia = "こんにちはと出力して"
 
 
 # 起動時に動作する処理
@@ -71,7 +79,7 @@ async def on_message(message):
                 
 
     #メッセージに添付ファイルはありますか
-    if message.attachments and message.content.startswith("/pic"):
+    if message.attachments and message.content.startswith("/pichajime"):
         async with message.channel.typing():
             #添付ファイルを一つずつチェック
             for attachment in message.attachments:
@@ -80,8 +88,8 @@ async def on_message(message):
                     try:
                         image_data = await attachment.read()
                         image = Image.open(io.BytesIO(image_data))
-                        contents = [prompt, image]
-                        response = chat.send_message(contents)
+                        contents = [prompt_hajime, image]
+                        response = chat_hajime.send_message(contents)
                         analyze_result = response.text.split()
                         await message.channel.send(f"Vo: {analyze_result[0]}, Da: {analyze_result[1]}, Vi: {analyze_result[2]}")
                     except Exception as e:
@@ -89,6 +97,56 @@ async def on_message(message):
 
                     result = calc_score(int(analyze_result[0]), int(analyze_result[1]), int(analyze_result[2]))
                     await message.channel.send(result)
+                    
+    if message.attachments and message.content.startswith("/nia"):
+            # Geminiに渡すためのリストを準備。最初にプロンプト（指示文）を入れる。
+            prompt_parts = [prompt_nia]
+
+            async with message.channel.typing():
+                # 添付ファイルを一つずつチェック
+                for attachment in message.attachments:
+                    # 添付ファイルが画像形式かを確認
+                    if attachment.content_type.startswith('image/'):
+                        try:
+                            image_data = await attachment.read()
+                            img = Image.open(io.BytesIO(image_data))
+
+                            # 画像の上半分を切り取る
+                            width, height = img.size
+                            crop_area = (0, 0, width, height // 2)
+                            cropped_img = img.crop(crop_area)
+
+                            # Geminiに送信するために画像をバイトデータに変換
+                            img_byte_arr = io.BytesIO()
+                            img_format = img.format if img.format else 'PNG'
+                            cropped_img.save(img_byte_arr, format=img_format)
+
+                            # ★★★ 修正点1: "mine_type" -> "mime_type" に修正 ★★★
+                            image_part = {
+                                "mime_type": f'image/{img_format.lower()}', 
+                                "data": img_byte_arr.getvalue()
+                            }
+
+                            # ★★★ 修正点2: 画像データを直接リストに追加 ★★★
+                            prompt_parts.append(image_part)
+
+                        except Exception as e:
+                            await message.channel.send(f"画像の処理中にエラーが発生しました: {e}")
+                            print(e) # エラーをコンソールに表示
+                            return # エラーが起きたら処理を中断
+
+                # 添付された画像が1枚でもあれば、Geminiにリクエストを送る
+                if len(prompt_parts) > 1: # 最初のプロンプト以外に画像データがあるかチェック
+                    try:
+                        # ★★★ 修正点3,4: nia用のモデルを使い、generate_contentで送信 ★★★
+                        response = model_nia.generate_content(prompt_parts)
+                        analyze_result = response.text.split(',') # プロンプトでカンマ区切りを指定したので、カンマで分割
+                        await message.channel.send(analyze_result)
+                    except Exception as e:
+                        await message.channel.send(f"Gemini APIとの通信でエラーが発生しました: {e}")
+                        print(e)
+                else:
+                    await message.channel.send("処理できる画像が添付されていませんでした。")                    
     
         
 
