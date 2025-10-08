@@ -123,13 +123,11 @@ async def on_message(message):
                             img_byte_arr = io.BytesIO()
                             cropped_img.save(img_byte_arr, format='JPEG')
 
-                            # ★★★ 修正点1: "mine_type" -> "mime_type" に修正 ★★★
                             image_part = {
                                 "mime_type": 'image/jpeg', 
                                 "data": img_byte_arr.getvalue()
                             }
 
-                            # ★★★ 修正点2: 画像データを直接リストに追加 ★★★
                             prompt_parts.append(image_part)
 
                         except Exception as e:
@@ -140,7 +138,6 @@ async def on_message(message):
                 # 添付された画像が1枚でもあれば、Geminiにリクエストを送る
                 if len(prompt_parts) > 1: # 最初のプロンプト以外に画像データがあるかチェック
                     try:
-                        # ★★★ 修正点3,4: nia用のモデルを使い、generate_contentで送信 ★★★
                         response = model_nia.generate_content(prompt_parts)
                         analyze_result = response.text.split(',') # プロンプトでカンマ区切りを指定したので、カンマで分割
                         score_parts = message.content.split()[1:]#コマンドあとの数字を取得し
