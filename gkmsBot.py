@@ -11,6 +11,7 @@ import discord
 from PIL import Image
 import os
 from dotenv import load_dotenv
+from niacalc_main import nia_caluculation
 load_dotenv()
 
 # 自分のBotのアクセストークンに置き換えてください
@@ -118,12 +119,11 @@ async def on_message(message):
 
                             # Geminiに送信するために画像をバイトデータに変換
                             img_byte_arr = io.BytesIO()
-                            img_format = img.format if img.format else 'PNG'
-                            # cropped_img.save(img_byte_arr, format=img_format)
+                            cropped_img.save(img_byte_arr, format='JPEG')
 
                             # ★★★ 修正点1: "mine_type" -> "mime_type" に修正 ★★★
                             image_part = {
-                                "mime_type": f'image/{img_format.lower()}', 
+                                "mime_type": 'image/jpeg', 
                                 "data": img_byte_arr.getvalue()
                             }
 
@@ -141,9 +141,15 @@ async def on_message(message):
                         # ★★★ 修正点3,4: nia用のモデルを使い、generate_contentで送信 ★★★
                         response = model_nia.generate_content(prompt_parts)
                         analyze_result = response.text.split(',') # プロンプトでカンマ区切りを指定したので、カンマで分割
-                        await message.channel.send(analyze_result)
+                        score_parts = message.content.split()[1:]#コマンドあとの数字を取得し
+                        score = list(map(float, score_parts))#int変換
+                        print(analyze_result)
+                        result = nia_caluculation(float(analyze_result[0]), float(analyze_result[1]), float(analyze_result[2]), float(analyze_result[4]),
+                                                    float(analyze_result[5]), float(analyze_result[6]), float(analyze_result[3]), analyze_result[7], score)
+                        print(result)
+                        await message.channel.send(result)
                     except Exception as e:
-                        await message.channel.send(f"Gemini APIとの通信でエラーが発生しました: {e}")
+                        # await message.channel.send(f"Gemini APIとの通信でエラーが発生しました: {e}")
                         print(e)
                 else:
                     await message.channel.send("処理できる画像が添付されていませんでした。")                    
