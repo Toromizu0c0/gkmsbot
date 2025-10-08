@@ -119,19 +119,19 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
     #NIA評価点　=パラメータ文 + ファン投票数換算文
     final_result = math.floor(fan_result + status_result)
 
-    print(f"アイドル: {name} ({idol_info['type']})")
-    print(f"流行順: {idol_info['trends']}")
+    # print(f"アイドル: {name} ({idol_info['type']})")
+    # print(f"流行順: {idol_info['trends']}")
 
-    print(f"item_bonus: {item_bonus*100}%")
-    print(f"Vo:{status_dict['Vocal']}, Da:{status_dict['Dance']}, Vi:{status_dict['Visual']}")
-    print(f"Vo_bonus:{bonus_dict['Vocal']*100:.1f}%, Da_bonus:{bonus_dict['Dance']*100:.1f}%, Vi_bonus:{bonus_dict['Visual']*100:.1f}%")
-    print(f"fans:{fans}")
-    print(f"score Vo:{score_dict['Vocal']}, Da:{score_dict['Dance']}, Vi:{score_dict['Visual']}")
+    # print(f"item_bonus: {item_bonus*100}%")
+    # print(f"Vo:{status_dict['Vocal']}, Da:{status_dict['Dance']}, Vi:{status_dict['Visual']}")
+    # print(f"Vo_bonus:{bonus_dict['Vocal']*100:.1f}%, Da_bonus:{bonus_dict['Dance']*100:.1f}%, Vi_bonus:{bonus_dict['Visual']*100:.1f}%")
+    # print(f"fans:{fans}")
+    # print(f"score Vo:{score_dict['Vocal']}, Da:{score_dict['Dance']}, Vi:{score_dict['Visual']}")
 
-    print(f"rise_status Vo:{rise_status_dict['Vocal']:.0f}, Da:{rise_status_dict['Dance']:.0f}, Vi:{rise_status_dict['Visual']:.0f}")
-    print(f"final_status Vo:{final_status_dict['Vocal']:.0f}, Da:{final_status_dict['Dance']:.0f}, Vi:{final_status_dict['Visual']:.0f}")
-    print(f"final_fans:{final_fans:.0f}")
-    print(f"NIA評価点:{final_result}")
+    # print(f"rise_status Vo:{rise_status_dict['Vocal']:.0f}, Da:{rise_status_dict['Dance']:.0f}, Vi:{rise_status_dict['Visual']:.0f}")
+    # print(f"final_status Vo:{final_status_dict['Vocal']:.0f}, Da:{final_status_dict['Dance']:.0f}, Vi:{final_status_dict['Visual']:.0f}")
+    # print(f"final_fans:{final_fans:.0f}")
+    # print(f"NIA評価点:{final_result}")
     
     result_data = {
         "idol_name": name,
