@@ -28,13 +28,13 @@ from niacalc_config import CONFIG
 # idol_info = CONFIG["IDOL_SETTINGS"][idol_name]
 
 def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
-    status = [s1, s2, s3]
-    bonus = [b1/100, b2/100, b3/100]
-    score = scores
-    idol_info = CONFIG["IDOL_SETTINGS"][name]
-    fans = fans
-    sum_score = sum(score)    
-    item_bonus = 40.0/100
+    status = [s1, s2, s3]#流行別試験前ステータス
+    bonus = [b1/100, b2/100, b3/100]#パラメータボーナス
+    score = scores#流行別最終スコアのリスト
+    idol_info = CONFIG["IDOL_SETTINGS"][name]#アイドル名
+    fans = fans#ファン数
+    sum_score = sum(score)#最終合計スコア    
+    item_bonus = 40.0/100#アイテムボーナス
 
     #ファン数の計算
     base_fans = CONFIG["base_fans"]
@@ -53,7 +53,7 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
         final_fans = fans + 1.5 * (base_fans[0] + sum_score * 0.07592333987)
 
 
-
+    #ステータスの計算
     limit_rise_status = CONFIG['status_rise'][idol_info['type']]['limit_rise']
     base_status = CONFIG["status_rise"][idol_info['type']]['base']
     limit_status_coefficient = CONFIG["status_rise"][idol_info['type']]['limit_coeff']
@@ -63,7 +63,7 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
     status_decay_score = CONFIG["status_decay_score"][idol_info['type']]
     status_limit_score = CONFIG["status_limit_score"][idol_info['type']]
 
-    rise_status = np.array([0.0, 0.0, 0.0])
+    # rise_status = np.array([0.0, 0.0, 0.0])
     final_status = np.array([0.0, 0.0, 0.0])
 
     status_dict = {'Vocal': status[0], 'Dance': status[1], 'Visual': status[2]}
@@ -73,8 +73,7 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
     rise_status_dict = {'Vocal': 0.0, 'Dance': 0.0, 'Visual': 0.0}
     final_status_dict = {'Vocal': 0.0, 'Dance': 0.0, 'Visual': 0.0}
 
-
-
+    #第一流行から計算
     for i, attr in enumerate(idol_info['trends']):
         current_score = score_dict[attr]
         # print(attr, current_score)
@@ -102,6 +101,7 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
         rise_status_dict[attr] = total_rise
         final_status_dict[attr] = status_dict[attr] + total_rise
 
+    #総ファン数による係数を取得
     c, ratio = 0, 0
     for limit, const_c, const_ratio in CONFIG['fan_rank_rules']:
         if final_fans < limit:
@@ -110,7 +110,7 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
 
 
 
-    final_status = [float(value) for value in final_status_dict.values()]
+    final_status = [min(float(value), 2300) for value in final_status_dict.values()]#上限は2300なので
     sum_final_status = sum(final_status)
     status_result = math.floor(sum_final_status * 2.3)
     fan_result = (math.floor(final_fans) * ratio + c)

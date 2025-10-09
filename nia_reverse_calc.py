@@ -4,6 +4,7 @@ import math
 import numpy as np
 
 def allo_score(total_score, idol_name):
+    #各情報取得
     idol_info = CONFIG["IDOL_SETTINGS"][idol_name]
     idol_type = idol_info["type"]
     trend_order = idol_info["trends"]
