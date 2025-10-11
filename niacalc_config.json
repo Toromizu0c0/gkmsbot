@@ -1,52 +1,94 @@
 {
-    "IDOL_SETTINGS": {
-        "花海咲季": {"type": "balance", "trends": ["Visual", "Dance", "Vocal"]},
-        "月村手毬": {"type": "specialized", "trends": ["Vocal", "Dance", "Visual"]},
-        "藤田ことね": {"type": "specialized", "trends": ["Dance", "Visual", "Vocal"]},
-        "有村麻央": {"type": "specialized", "trends": ["Vocal", "Visual", "Dance"]},
-        "葛城リーリヤ": {"type": "balance", "trends": ["Visual", "Dance", "Vocal"]},
-        "倉本千奈": {"type": "specialized", "trends": ["Dance", "Visual", "Vocal"]},
-        "紫雲清夏": {"type": "specialized", "trends": ["Dance", "Visual", "Vocal"]},
-        "篠澤広": {"type": "balance", "trends": ["Vocal", "Dance", "Visual"]},
-        "花海佑芽": {"type": "balance", "trends": ["Dance", "Vocal", "Visual"]},
-        "姫崎莉波": {"type": "balance", "trends": ["Visual", "Dance", "Vocal"]},
-        "十王星南": {"type": "balance", "trends": ["Visual", "Vocal", "Dance"]},
-        "秦谷 美鈴": {"type": "specialized", "trends": ["Vocal", "Visual", "Dance"]}
-    },
-    "status_decay_score": {
-        "balance": [66600, 31350, 17600],
-        "specialized": [65350, 30900, 17800]
-    },
-    "status_limit_score": {
-        "balance": [134210, 63750, 36500],
-        "specialized": [136070, 63250, 36100]
-    },
-    "needed_score": 100000,
-    "sum_decay_score": 260417,
-    "second_decay_score": 640882,
-    "max_score": 1200582,
-    "limit_fan": 32668,
-    "base_fans": [3656.17, 23427.8, 30358.5],
-    "status_rise": {
-        "balance": {
-            "limit_rise": [172.0, 142.0, 116.0],
-            "base": [0.5, 0.0, 0.0],
-            "limit_coeff": [0.000756, 0.001276, 0.00182],
-            "decay_coeff": [0.0018, 0.00325, 0.00465],
-            "decay_correct": [70.0, 61.0, 50.0]
+    "eval":{"SSS+":23000, "SSS":20000, "SS+":18000, "SS":16000, "S+":14500},
+    "common":{
+        "IDOL_SETTINGS": {
+            "花海咲季": {"type": "balance", "trends": ["Visual", "Dance", "Vocal"]},
+            "月村手毬": {"type": "specialized", "trends": ["Vocal", "Dance", "Visual"]},
+            "藤田ことね": {"type": "specialized", "trends": ["Dance", "Visual", "Vocal"]},
+            "有村麻央": {"type": "specialized", "trends": ["Vocal", "Visual", "Dance"]},
+            "葛城リーリヤ": {"type": "balance", "trends": ["Visual", "Dance", "Vocal"]},
+            "倉本千奈": {"type": "specialized", "trends": ["Dance", "Visual", "Vocal"]},
+            "紫雲清夏": {"type": "specialized", "trends": ["Dance", "Visual", "Vocal"]},
+            "篠澤広": {"type": "balance", "trends": ["Vocal", "Dance", "Visual"]},
+            "花海佑芽": {"type": "balance", "trends": ["Dance", "Vocal", "Visual"]},
+            "姫崎莉波": {"type": "balance", "trends": ["Visual", "Dance", "Vocal"]},
+            "十王星南": {"type": "balance", "trends": ["Visual", "Vocal", "Dance"]},
+            "秦谷 美鈴": {"type": "specialized", "trends": ["Vocal", "Visual", "Dance"]}
         },
-        "specialized": {
-            "limit_rise": [215.0, 129.0, 86.0],
-            "base": [0.0, 0.0, 0.0],
-            "limit_coeff": [0.000915, 0.00117, 0.00136],
-            "decay_coeff": [0.0023, 0.00295, 0.003465],
-            "decay_correct": [90.5, 55.0, 37.0]
+
+        "status_multiplier": 2.3,
+        "fan_rank_rules": [
+            [20001, 0, 0.100], [40001, 300, 0.085], [60001, 900, 0.070],
+            [80001, 1200, 0.065], [100001, 1600, 0.060], [120001, 2600, 0.050],
+            [140001, 3800, 0.040], ["inf", 5200, 0.030]
+        ]
+    },
+
+    "finale":{
+        "status_decay_score": {
+            "balance": [66600, 31350, 17600],
+            "specialized": [65350, 30900, 17800]
+        },
+        "status_limit_score": {
+            "balance": [134210, 63750, 36500],
+            "specialized": [136070, 63250, 36100]
+        },
+        "needed_score": 100000,
+        "sum_decay_score": 260417,
+        "second_decay_score": 640882,
+        "max_score": 1200582,
+        "limit_fan": 32668,
+        "base_fans": [3656.17, 23427.8, 30358.5],
+        "fan_coeff":[0.07592333987, 0.01821637749, 0.004126232489],
+        "status_rise": {
+            "balance": {
+                "limit_rise": [172.0, 142.0, 116.0],
+                "base": [0.5, 0.0, 0.0],
+                "limit_coeff": [0.000756, 0.001276, 0.00182],
+                "decay_coeff": [0.0018, 0.00325, 0.00465],
+                "decay_correct": [70.0, 61.0, 50.0]
+            },
+            "specialized": {
+                "limit_rise": [215.0, 129.0, 86.0],
+                "base": [0.0, 0.0, 0.0],
+                "limit_coeff": [0.000915, 0.00117, 0.00136],
+                "decay_coeff": [0.0023, 0.00295, 0.003465],
+                "decay_correct": [90.5, 55.0, 37.0]
+            }
         }
     },
-    "status_multiplier": 2.3,
-    "fan_rank_rules": [
-        [20001, 0, 0.100], [40001, 300, 0.085], [60001, 900, 0.070],
-        [80001, 1200, 0.065], [100001, 1600, 0.060], [120001, 2600, 0.050],
-        [140001, 3800, 0.040], ["inf", 5200, 0.030]
-    ]
+
+    "quartet":{
+        "status_decay_score": {
+            "balance": [34210, 16050, 9120],
+            "specialized": [34133, 15970, 9000]
+        },
+        "status_limit_score": {
+            "balance": [134210, 63750, 36500],
+            "specialized": [70750, 32900, 19570]
+        },
+        "needed_score": 50000,
+        "sum_decay_score": 119982,
+        "second_decay_score": 180000,
+        "max_score": 239970,
+        "limit_fan": 25334,
+        "base_fans": [3145.5, 18613, 23654],
+        "fan_coeff":[0.1289162297, 0.08399651702, 0.02800776858],
+        "status_rise": {
+            "balance": {
+                "limit_rise": [145.0, 120.0, 98.0],
+                "base": [0.5, 2.0, 1.0],
+                "limit_coeff": [0.001194, 0.00213, 0.00308],
+                "decay_coeff": [0.002965, 0.00512, 0.00741],
+                "decay_correct": [61.08, 50.0, 40.05]
+            },
+            "specialized": {
+                "limit_rise": [182.0, 109.0, 73.0],
+                "base": [0.5, 1.0, 0.0],
+                "limit_coeff": [0.00148, 0.0019, 0.0023],
+                "decay_coeff": [0.00373, 0.00475, 0.0056],
+                "decay_correct": [77.3, 46.5, 30]
+            }
+        }
+    }
 }

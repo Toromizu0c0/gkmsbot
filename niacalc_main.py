@@ -30,41 +30,42 @@ from importjson import get_json
 # idol_info = CONFIG["IDOL_SETTINGS"][idol_name]
 CONFIG = get_json()
 
-def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
+def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores, stage):
     status = [s1, s2, s3]#流行別試験前ステータス
     bonus = [b1/100, b2/100, b3/100]#パラメータボーナス
     score = scores#流行別最終スコアのリスト
-    idol_info = CONFIG["IDOL_SETTINGS"][name]#アイドル名
+    idol_info = CONFIG["common"]["IDOL_SETTINGS"][name]#アイドル名
     fans = fans#ファン数
     sum_score = sum(score)#最終合計スコア    
     item_bonus = 40.0/100#アイテムボーナス
 
     #ファン数の計算
-    base_fans = CONFIG["base_fans"]
-    max_score = CONFIG["max_score"]
-    limit_fan = CONFIG["limit_fan"]
-    secand_d_score = CONFIG["second_decay_score"]
-    d_score = CONFIG["sum_decay_score"]
+    base_fans = CONFIG[stage]["base_fans"]
+    max_score = CONFIG[stage]["max_score"]
+    limit_fan = CONFIG[stage]["limit_fan"]
+    secand_d_score = CONFIG[stage]["second_decay_score"]
+    d_score = CONFIG[stage]["sum_decay_score"]
+    fan_coeff = CONFIG[stage]["fan_coeff"]
 
     if sum_score >= max_score:
         final_fans = fans + limit_fan*1.5
     elif sum_score > secand_d_score:
-        final_fans = fans + 1.5 * ((sum_score - secand_d_score) * 0.004126232489 + base_fans[2])
+        final_fans = fans + 1.5 * ((sum_score - secand_d_score) * fan_coeff[2] + base_fans[2])
     elif sum_score > d_score:
-        final_fans = fans + 1.5 * ((sum_score - d_score) * 0.01821637749 + base_fans[1])
+        final_fans = fans + 1.5 * ((sum_score - d_score) * fan_coeff[1]  + base_fans[1])
     else:
-        final_fans = fans + 1.5 * (base_fans[0] + sum_score * 0.07592333987)
+        final_fans = fans + 1.5 * (base_fans[0] + fan_coeff[0] * 0.07592333987)
 
 
     #ステータスの計算
-    limit_rise_status = CONFIG['status_rise'][idol_info['type']]['limit_rise']
-    base_status = CONFIG["status_rise"][idol_info['type']]['base']
-    limit_status_coefficient = CONFIG["status_rise"][idol_info['type']]['limit_coeff']
-    decay_status_coefficient = CONFIG["status_rise"][idol_info['type']]['decay_coeff']
-    decay_correct = CONFIG["status_rise"][idol_info['type']]['decay_correct']
+    limit_rise_status = CONFIG[stage]['status_rise'][idol_info['type']]['limit_rise']
+    base_status = CONFIG[stage]["status_rise"][idol_info['type']]['base']
+    limit_status_coefficient = CONFIG[stage]["status_rise"][idol_info['type']]['limit_coeff']
+    decay_status_coefficient = CONFIG[stage]["status_rise"][idol_info['type']]['decay_coeff']
+    decay_correct = CONFIG[stage]["status_rise"][idol_info['type']]['decay_coeff']
 
-    status_decay_score = CONFIG["status_decay_score"][idol_info['type']]
-    status_limit_score = CONFIG["status_limit_score"][idol_info['type']]
+    status_decay_score = CONFIG[stage]["status_decay_score"][idol_info['type']]
+    status_limit_score = CONFIG[stage]["status_limit_score"][idol_info['type']]
 
     # rise_status = np.array([0.0, 0.0, 0.0])
     final_status = np.array([0.0, 0.0, 0.0])
@@ -106,7 +107,7 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
 
     #総ファン数による係数を取得
     c, ratio = 0, 0
-    for limit, const_c, const_ratio in CONFIG['fan_rank_rules']:
+    for limit, const_c, const_ratio in CONFIG["common"]['fan_rank_rules']:
         if final_fans < limit:
             c, ratio = const_c, const_ratio
             break
