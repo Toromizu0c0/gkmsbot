@@ -1,7 +1,10 @@
 from niacalc_main import nia_caluculation  # 関数名を適切に変更してください
-from niacalc_config import CONFIG
+# from niacalc_config import CONFIG
 import math
 import numpy as np
+from importjson import get_json
+
+CONFIG = get_json()
 
 def allo_score(total_score, idol_name):
     #各情報取得

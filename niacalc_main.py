@@ -1,6 +1,8 @@
 import math
-import numpy as np   
-from niacalc_config import CONFIG
+import numpy as np  
+from importjson import get_json 
+# import json
+# from niacalc_config import CONFIG
 
 
 # status = input("ステータスを入力:")
@@ -26,6 +28,7 @@ from niacalc_config import CONFIG
 # score = list(map(float, score.split()))
 # sum_score = sum(score)
 # idol_info = CONFIG["IDOL_SETTINGS"][idol_name]
+CONFIG = get_json()
 
 def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores):
     status = [s1, s2, s3]#流行別試験前ステータス
