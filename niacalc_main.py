@@ -49,9 +49,9 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores, stage):
 
     if sum_score >= max_score:
         final_fans = fans + limit_fan*1.5
-    elif sum_score > secand_d_score:
+    elif sum_score >= secand_d_score:
         final_fans = fans + 1.5 * ((sum_score - secand_d_score) * fan_coeff[2] + base_fans[2])
-    elif sum_score > d_score:
+    elif sum_score >= d_score:
         final_fans = fans + 1.5 * ((sum_score - d_score) * fan_coeff[1]  + base_fans[1])
     else:
         final_fans = fans + 1.5 * (base_fans[0] + fan_coeff[0] * 0.07592333987)

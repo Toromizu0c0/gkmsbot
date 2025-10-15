@@ -65,11 +65,12 @@ if __name__ == "__main__":
 
     results = run_function_500_times(976, 1428, 1342, 18.0, 33.5, 33.7, 78474, '葛城リーリヤ', "finale")
 
-    for r in results:
-        print(f"{r["nia_score"]}:{r["scores"]}")
+    # for r in results:
+    #     print(f"{r["nia_score"]}:{r["scores"]}")
     scores_ary = np.array([d["nia_score"] for d in results])
     # print(scores_ary)
     idx = np.argmin(np.abs(scores_ary - 18000))
 
-        
-    # print(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}")
+    key=""
+    value=""
+    print(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}")
