@@ -140,7 +140,7 @@ async def on_message(message):
                 # 添付された画像が1枚でもあれば、Geminiにリクエストを送る
                 if len(prompt_parts) > 1: # 最初のプロンプト以外に画像データがあるかチェック
                     try:
-                        send_message = []
+                        send_message = [f"目標評価：各必要スコア：最終評価\n"]
                         stage = message.content.split()[1]#コマンドあとの数字を取得し
                         # print(type(stage))
                         # await message.channel.send(stage)

@@ -45,7 +45,7 @@ def run_function_500_times(s1, s2, s3, b1, b2, b3, fans, name, stage):
     num_division = 500#分割数500
     under_limit = 100000
     over_limit = 1200582
-    step = round((over_limit - under_limit) / (num_division - 1), -1)
+    step = math.floor(round((over_limit - under_limit) / (num_division - 1), -1))
     total_scores = [under_limit + step * i for i in range(num_division)]
     scores = [allo_score(total_score, name, stage) for total_score in  total_scores]
     # for i in range(100):
@@ -59,18 +59,19 @@ def run_function_500_times(s1, s2, s3, b1, b2, b3, fans, name, stage):
 if __name__ == "__main__":
     evals = CONFIG["eval"]
     message = "finale"
-    if message in evals.items():
-        print("a")
-    print(evals)
+    # print(evals)
 
-    results = run_function_500_times(976, 1428, 1342, 18.0, 33.5, 33.7, 78474, '葛城リーリヤ', "finale")
+    results = run_function_500_times(1045, 1127, 1208, 28.1, 30.0, 36.9, 85519, '葛城リーリヤ', message)
 
-    # for r in results:
-    #     print(f"{r["nia_score"]}:{r["scores"]}")
+    for r in results:
+        print(f"{r["nia_score"]}:{r["scores"]}:{r["final_fans"]}")
     scores_ary = np.array([d["nia_score"] for d in results])
     # print(scores_ary)
     idx = np.argmin(np.abs(scores_ary - 18000))
+    # idx = 1
 
     key=""
     value=""
     print(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}")
+    print()
+    print(results[idx])

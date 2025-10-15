@@ -45,6 +45,7 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores, stage):
     limit_fan = CONFIG[stage]["limit_fan"]
     secand_d_score = CONFIG[stage]["second_decay_score"]
     d_score = CONFIG[stage]["sum_decay_score"]
+    needed_score = CONFIG[stage]["needed_score"]
     fan_coeff = CONFIG[stage]["fan_coeff"]
 
     if sum_score >= max_score:
@@ -53,8 +54,10 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores, stage):
         final_fans = fans + 1.5 * ((sum_score - secand_d_score) * fan_coeff[2] + base_fans[2])
     elif sum_score >= d_score:
         final_fans = fans + 1.5 * ((sum_score - d_score) * fan_coeff[1]  + base_fans[1])
+    elif sum_score > needed_score:
+        final_fans = fans + 1.5 * ((sum_score - 0) * fan_coeff[0] + base_fans[0])
     else:
-        final_fans = fans + 1.5 * (base_fans[0] + fan_coeff[0] * 0.07592333987)
+        final_fans = fans
 
 
     #ステータスの計算
@@ -62,7 +65,7 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores, stage):
     base_status = CONFIG[stage]["status_rise"][idol_info['type']]['base']
     limit_status_coefficient = CONFIG[stage]["status_rise"][idol_info['type']]['limit_coeff']
     decay_status_coefficient = CONFIG[stage]["status_rise"][idol_info['type']]['decay_coeff']
-    decay_correct = CONFIG[stage]["status_rise"][idol_info['type']]['decay_coeff']
+    decay_correct = CONFIG[stage]["status_rise"][idol_info['type']]['decay_correct']
 
     status_decay_score = CONFIG[stage]["status_decay_score"][idol_info['type']]
     status_limit_score = CONFIG[stage]["status_limit_score"][idol_info['type']]
