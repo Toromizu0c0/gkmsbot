@@ -14,6 +14,8 @@ from dotenv import load_dotenv
 from niacalc_main import nia_caluculation
 from nia_reverse_calc import run_function_500_times
 import numpy as np
+from importjson import get_json
+CONFIG = get_json()
 load_dotenv()
 
 # 自分のBotのアクセストークンに置き換えてください
@@ -138,20 +140,31 @@ async def on_message(message):
                 # 添付された画像が1枚でもあれば、Geminiにリクエストを送る
                 if len(prompt_parts) > 1: # 最初のプロンプト以外に画像データがあるかチェック
                     try:
-                        response = model_nia.generate_content(prompt_parts)
-                        analyze_result = response.text.split(',') # プロンプトでカンマ区切りを指定したので、カンマで分割
-                        stage = message.content.split()[1:]#コマンドあとの数字を取得し
-                        # score = list(map(float, score_parts))#int変換
-                        print(analyze_result)
-                        # result = nia_caluculation(float(analyze_result[0]), float(analyze_result[1]), float(analyze_result[2]), float(analyze_result[4]),
-                                                    # float(analyze_result[5]), float(analyze_result[6]), float(analyze_result[3]), analyze_result[7], score)
-                        results = run_function_500_times(float(analyze_result[0]), float(analyze_result[1]), float(analyze_result[2]), float(analyze_result[4]),
-                                                            float(analyze_result[5]), float(analyze_result[6]), float(analyze_result[3]), analyze_result[7])
-                        scores_ary = np.array([d["nia_score"] for d in results])
-                        idx = np.argmin(np.abs(scores_ary - stage))
-                        final_result = results[idx]
-                        send_message = f"アイドル名:{final_result["idol_name"]}\n\入力ステータス:{[analyze_result[0], analyze_result[1], analyze_result[2]]}\n\目標評価値:{score}\n\最終ステータス:{final_result["final_status"]}\n\最終オデ必要スコア:{final_result["scores"]}\n\最終評価値:{final_result["nia_score"]}"
-                        await message.channel.send(send_message)
+                        send_message = []
+                        stage = message.content.split()[1]#コマンドあとの数字を取得し
+                        # print(type(stage))
+                        # await message.channel.send(stage)
+                        if stage != "finale" and stage != "quartet":
+                            await message.channel.send("ステージ名が違います")
+
+                        else:
+                            evals = CONFIG["eval"]
+                            response = model_nia.generate_content(prompt_parts)
+                            analyze_result = response.text.split(',') # プロンプトでカンマ区切りを指定したので、カンマで分割
+
+                            for key, value in evals.items():
+                                results = run_function_500_times(float(analyze_result[0]), float(analyze_result[1]), float(analyze_result[2]), float(analyze_result[4]),
+                                                                float(analyze_result[5]), float(analyze_result[6]), float(analyze_result[3]), analyze_result[7],stage)
+
+                                scores_ary = np.array([d["nia_score"] for d in results])
+                                idx = np.argmin(np.abs(scores_ary - value))
+
+                                print(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}")    
+
+                                send_message.append(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}\n")
+                                
+                            sum_send_message = "".join(send_message)
+                            await message.channel.send(sum_send_message)
                     except Exception as e:
                         # await message.channel.send(f"Gemini APIとの通信でエラーが発生しました: {e}")
                         print(e)
