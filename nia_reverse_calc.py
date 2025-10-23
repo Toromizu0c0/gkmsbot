@@ -61,15 +61,19 @@ if __name__ == "__main__":
     message = "finale"
     # print(evals)
 
-    results = run_function_500_times(1045, 1127, 1208, 28.1, 30.0, 36.9, 85519, '葛城リーリヤ', message)
+    results = run_function_500_times(1320, 1311, 1354, 38.6, 31.0, 10.0, 99481, '篠澤広', message)
 
-    for r in results:
-        print(f"{r["nia_score"]}:{r["scores"]}:{r["final_fans"]}")
-    scores_ary = np.array([d["nia_score"] for d in results])
-    # print(scores_ary)
-    idx = np.argmin(np.abs(scores_ary - 18000))
+    # for r in results:
+    #     print(f"{r["nia_score"]}:{r["scores"]}:{r["final_fans"]}")
+    # scores_ary = np.array([d["nia_score"] for d in results])
+    # # print(scores_ary)
+    # idx = np.argmin(np.abs(scores_ary - 18000))
+    
     # idx = 1
-
+    results = []
+    results.append(nia_caluculation(1320, 1311, 1354, 38.6, 31.0, 10.0, 99481, '篠澤広', [126045, 98570, 56394], message))
+    idx = 0
+    
     key=""
     value=""
     print(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}")

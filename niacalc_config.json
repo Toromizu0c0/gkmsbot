@@ -1,5 +1,5 @@
 {
-    "eval":{"S":13000, "S+":14500, "SS":16000, "SS+":18000, "SSS":20000, "SSS+":23000},
+    "eval":{"S":13000, "S+":14500, "SS":16000, "SS+":18000, "SSS":20000, "SSS+":23000, "22000":22000},
     "common":{
         "IDOL_SETTINGS": {
             "花海咲季": {"type": "balance", "trends": ["Visual", "Dance", "Vocal"]},

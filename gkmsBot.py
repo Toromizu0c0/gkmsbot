@@ -140,7 +140,7 @@ async def on_message(message):
                 # 添付された画像が1枚でもあれば、Geminiにリクエストを送る
                 if len(prompt_parts) > 1: # 最初のプロンプト以外に画像データがあるかチェック
                     try:
-                        send_message = [f"目標評価：各必要スコア：最終評価\n"]
+                        send_message = [f"目標評価：各必要スコア\n"]
                         stage = message.content.split()[1]#コマンドあとの数字を取得し
                         # print(type(stage))
                         # await message.channel.send(stage)
@@ -149,19 +149,28 @@ async def on_message(message):
 
                         else:
                             evals = CONFIG["eval"]
+                            # print(evals)
                             response = model_nia.generate_content(prompt_parts)
                             analyze_result = response.text.split(',') # プロンプトでカンマ区切りを指定したので、カンマで分割
-
+                            await message.channel.send(f"解析結果: {analyze_result}")
                             for key, value in evals.items():
+                                # print(key, value)
                                 results = run_function_500_times(float(analyze_result[0]), float(analyze_result[1]), float(analyze_result[2]), float(analyze_result[4]),
                                                                 float(analyze_result[5]), float(analyze_result[6]), float(analyze_result[3]), analyze_result[7],stage)
 
                                 scores_ary = np.array([d["nia_score"] for d in results])
                                 idx = np.argmin(np.abs(scores_ary - value))
+                                final_score = scores_ary[idx]
+                                if final_score < value and final_score != max(scores_ary):
+                                    idx += 1
+                                    send_message.append(f"{key}:{results[idx]["scores"]}\n")  
+                                    
+                                elif final_score < value and final_score == max(scores_ary):
+                                    send_message.append(f"{key}:達成不可\n")
+                                else:
+                                    send_message.append(f"{key}:{results[idx]["scores"]}\n")    
 
-                                print(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}")    
-
-                                send_message.append(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}\n")
+                                # send_message.append(f"{key}({value}) : {results[idx]["scores"]}\n")
                                 
                             sum_send_message = "".join(send_message)
                             await message.channel.send(sum_send_message)
