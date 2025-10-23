@@ -46,7 +46,7 @@ class NiaCog(commands.Cog):
             response = chat_nia.send_message(contents)
             analyze_result_nia = response.text.split(',')
             
-            send_message = ["目標評価:各必要スコア(流行別)"]
+            send_message = ["目標評価:各必要スコア(流行別)\n"]
             evals = CONFIG["eval"]
             
             for key, value in evals.items():
