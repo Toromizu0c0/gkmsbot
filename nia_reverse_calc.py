@@ -1,5 +1,4 @@
 from niacalc_main import nia_caluculation
-# from niacalc_config import CONFIG
 import math
 import numpy as np
 from importjson import get_json
@@ -54,28 +53,3 @@ def run_function_500_times(s1, s2, s3, b1, b2, b3, fans, name, stage):
     for i in range(500):
         result.append(nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores[i], stage))
     return result
-
-
-if __name__ == "__main__":
-    evals = CONFIG["eval"]
-    message = "finale"
-    # print(evals)
-
-    results = run_function_500_times(1320, 1311, 1354, 38.6, 31.0, 10.0, 99481, '篠澤広', message)
-
-    # for r in results:
-    #     print(f"{r["nia_score"]}:{r["scores"]}:{r["final_fans"]}")
-    # scores_ary = np.array([d["nia_score"] for d in results])
-    # # print(scores_ary)
-    # idx = np.argmin(np.abs(scores_ary - 18000))
-    
-    # idx = 1
-    results = []
-    results.append(nia_caluculation(1320, 1311, 1354, 38.6, 31.0, 10.0, 99481, '篠澤広', [126045, 98570, 56394], message))
-    idx = 0
-    
-    key=""
-    value=""
-    print(f"{key}({value}) : {results[idx]["scores"]}:{results[idx]["nia_score"]}")
-    print()
-    print(results[idx])

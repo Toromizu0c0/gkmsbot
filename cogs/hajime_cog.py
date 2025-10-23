@@ -1,8 +1,6 @@
 import discord
 from hajime_calc import calc_score
-import requests 
 import io       
-import asyncio
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai

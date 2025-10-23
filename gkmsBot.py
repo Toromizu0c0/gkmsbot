@@ -1,21 +1,13 @@
 # インストールした discord.py を読み込む
 import discord
-from hajime_calc import calc_score
-import requests 
-import io       
-import asyncio
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
 import discord
-from PIL import Image
 import os
 from dotenv import load_dotenv
-from niacalc_main import nia_caluculation
-from nia_reverse_calc import run_function_500_times
-import numpy as np
 from importjson import get_json
 from discord.ext import commands
+
 CONFIG = get_json()
 load_dotenv()
 

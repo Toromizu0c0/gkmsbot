@@ -1,8 +1,5 @@
 import discord
-from hajime_calc import calc_score
-import requests 
 import io       
-import asyncio
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -10,15 +7,14 @@ import discord
 from PIL import Image
 import os
 from dotenv import load_dotenv
-from niacalc_main import nia_caluculation
 from nia_reverse_calc import run_function_500_times
 import numpy as np
 from importjson import get_json
 from discord.ext import commands
-CONFIG = get_json()
 from discord import app_commands
 from discord.ext import commands
 
+CONFIG = get_json()
 NIA_GOOGLE_API_KEY = os.getenv("TOKEN_gkmsBot_Gemini_nia")
 model_nia = genai.GenerativeModel("gemini-2.5-flash")
 chat_nia = model_nia.start_chat(history=[])

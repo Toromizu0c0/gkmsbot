@@ -1,33 +1,7 @@
 import math
 import numpy as np  
 from importjson import get_json 
-# import json
-# from niacalc_config import CONFIG
 
-
-# status = input("ステータスを入力:")
-# bonus = input("ボーナスを入力(無ければ0):")
-# fans = int(input("ファン数を入力:"))
-# score = input("スコアを入力:")
-
-#アイドル情報
-# status = "1045 1127 1208"
-# bonus = "28.1 30.0 36.9"
-# fans = 85519.0
-# score = "190536 94503 37542"
-# idol_name = "姫崎莉波"
-# #入力情報から各流行ごとのステータスを読み取る
-# status = list(map(float, status.split()))
-# sum_score = sum(score)
-
-# #パラボバージョン
-# bonus = list(map(float, bonus.split()))
-# bonus = [ x /100 for x in bonus]
-
-# #オーディションスコアバージョン
-# score = list(map(float, score.split()))
-# sum_score = sum(score)
-# idol_info = CONFIG["IDOL_SETTINGS"][idol_name]
 CONFIG = get_json()
 
 def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores, stage):
@@ -126,20 +100,6 @@ def nia_caluculation(s1, s2, s3, b1, b2, b3, fans, name, scores, stage):
     #NIA評価点　=パラメータ文 + ファン投票数換算文
     final_result = math.floor(fan_result + status_result)
 
-    # print(f"アイドル: {name} ({idol_info['type']})")
-    # print(f"流行順: {idol_info['trends']}")
-
-    # print(f"item_bonus: {item_bonus*100}%")
-    # print(f"Vo:{status_dict['Vocal']}, Da:{status_dict['Dance']}, Vi:{status_dict['Visual']}")
-    # print(f"Vo_bonus:{bonus_dict['Vocal']*100:.1f}%, Da_bonus:{bonus_dict['Dance']*100:.1f}%, Vi_bonus:{bonus_dict['Visual']*100:.1f}%")
-    # print(f"fans:{fans}")
-    # print(f"score Vo:{score_dict['Vocal']}, Da:{score_dict['Dance']}, Vi:{score_dict['Visual']}")
-
-    # print(f"rise_status Vo:{rise_status_dict['Vocal']:.0f}, Da:{rise_status_dict['Dance']:.0f}, Vi:{rise_status_dict['Visual']:.0f}")
-    # print(f"final_status Vo:{final_status_dict['Vocal']:.0f}, Da:{final_status_dict['Dance']:.0f}, Vi:{final_status_dict['Visual']:.0f}")
-    # print(f"final_fans:{final_fans:.0f}")
-    # print(f"NIA評価点:{final_result}")
-    
     result_data = {
         "idol_name": name,
         "idol_type": idol_info['type'],
