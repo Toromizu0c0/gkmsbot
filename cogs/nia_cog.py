@@ -13,6 +13,8 @@ from importjson import get_json
 from discord.ext import commands
 from discord import app_commands
 from discord.ext import commands
+from discord.ui import Select, View
+
 
 CONFIG = get_json()
 NIA_GOOGLE_API_KEY = os.getenv("TOKEN_gkmsBot_Gemini_nia")
@@ -32,9 +34,9 @@ class NiaCog(commands.Cog):
         self.bot = bot
     
     @app_commands.command(name='nia', description="二枚の画像から必要情報を読み取り，各ランク到達に必要なスコア逆算")
-    @app_commands.describe(image1="スケジュール画面の画像を添付", image2="ステータス画面の画像を添付", stage="ステージを選択(finale or quartet)")
+    @app_commands.describe(image1="スケジュール画面の画像を添付", image2="ステータス画面の画像を添付", stage="ステージを選択(finale or quartet)",isEvent="強化月間？",stardust="星のきらめきの数")
     
-    async def nia_command(self, interaction:discord.Interaction, image1:discord.Attachment, image2:discord.Attachment, stage:str):
+    async def nia_command(self, interaction:discord.Interaction, image1:discord.Attachment, image2:discord.Attachment, stage:str, isEvent:bool=False, stardust:int=0):
         await interaction.response.defer()#計算中
         try:
             image_data1 = await image1.read()
